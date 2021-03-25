@@ -1,10 +1,7 @@
 from homeassistant.const import CONF_NAME, CONF_ICON, CONF_UNIQUE_ID
 from homeassistant.util import slugify
 import homeassistant.helpers.config_validation as cv
-import logging
 import voluptuous as vol
-
-_LOGGER = logging.getLogger(__name__)
 
 ZHI_SCHEMA = {
     vol.Optional(CONF_NAME): cv.string,
@@ -57,7 +54,8 @@ class ZhiPollEntity(ZhiEntity):
         try:
             self.data = await self.async_poll()
         except Exception as e:
-            _LOGGER.error("Error on update: %s", e)
+            from logging import getLogger
+            getLogger(__name__).error("Error on update: %s", e)
             self.data = None
 
     async def async_poll(self):
