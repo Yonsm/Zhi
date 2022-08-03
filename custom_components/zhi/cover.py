@@ -1,7 +1,6 @@
 from enum import IntEnum
 from .restore import ZhiRestoreEntity
-from homeassistant.components.cover import CoverEntity, ATTR_POSITION, STATE_CLOSED, STATE_CLOSING, STATE_OPEN, STATE_OPENING, PLATFORM_SCHEMA
-from homeassistant.helpers.restore_state import RestoreEntity
+from homeassistant.components.cover import CoverEntity, ATTR_POSITION, STATE_CLOSED, STATE_CLOSING, STATE_OPEN, STATE_OPENING
 
 
 class ConverOperation(IntEnum):
