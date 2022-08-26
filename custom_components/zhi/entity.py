@@ -13,25 +13,10 @@ ZHI_SCHEMA = {
 class ZhiEntity:
 
     def __init__(self, conf, icon=None):
-        self._name = conf.get(CONF_NAME) or self.__class__.__name__
-        self._icon = conf.get(CONF_ICON) or icon
-        self._unique_id = conf.get(CONF_UNIQUE_ID) or self.__class__.__name__.lower() + '.' + slugify(self._name)
-
-    @property
-    def name(self):
-        return self._name
-
-    @property
-    def icon(self):
-        return self._icon
-
-    @property
-    def unique_id(self):
-        return self._unique_id
-
-    @property
-    def should_poll(self):
-        return False
+        self._attr_name = conf.get(CONF_NAME) or self.__class__.__name__
+        self._attr_icon = conf.get(CONF_ICON) or icon
+        self._attr_should_poll = False
+        self._attr_unique_id = conf.get(CONF_UNIQUE_ID) or self.__class__.__name__.lower() + '.' + slugify(self._attr_name)
 
 
 class ZhiPollEntity(ZhiEntity):
