@@ -22,7 +22,7 @@ class ZhiRestoreEntity(RestoreEntity):
     async def state_sensor_changed(self, entity_id, old_state, new_state):
         if new_state and new_state.state not in [STATE_UNKNOWN, STATE_UNAVAILABLE]: # and new_state != old_state
             if not self.update_from_sensor(new_state):
-                await self.async_update_ha_state()
+                self.async_write_ha_state()
 
     def update_from_last_state(self, state):
         pass
