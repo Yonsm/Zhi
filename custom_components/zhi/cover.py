@@ -35,14 +35,14 @@ class ZhiTravelCover(CoverEntity, ZhiRestoreEntity):
             if (self._position >= 100 if op == ConverOperation.Open else self._position < 0):
                 self.untrack_cover()
                 self.track_cover_end(op)
-            await self.async_update_ha_state()
+            self.async_write_ha_state()
         if self._travel_time:
             self._state = (STATE_OPENING, STATE_CLOSING)[op]
             self.untrack_cover()
             self._untrack = self.hass.helpers.event.async_track_utc_time_change(async_tracking_cover)
         else:
             self.track_cover_end(op)
-            await self.async_update_ha_state()
+            self.async_write_ha_state()
 
     def track_cover_end(self, op):
         self._state = (STATE_OPEN, STATE_CLOSED)[op]
@@ -68,7 +68,7 @@ class ZhiTravelCover(CoverEntity, ZhiRestoreEntity):
                 self.untrack_cover()
             else:
                 self._position = 50
-            await self.async_update_ha_state()
+            self.async_write_ha_state()
 
     async def async_set_cover_position(self, **kwargs):
         position = kwargs.get(ATTR_POSITION)
