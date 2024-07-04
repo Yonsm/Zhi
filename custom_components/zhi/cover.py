@@ -1,7 +1,7 @@
 from enum import IntEnum
 from .restore import ZhiRestoreEntity
 from homeassistant.components.cover import CoverEntity, ATTR_POSITION, STATE_CLOSED, STATE_CLOSING, STATE_OPEN, STATE_OPENING
-
+from homeassistant.helpers.event import async_track_utc_time_change, async_call_later
 
 class ConverOperation(IntEnum):
     Open = 0
@@ -39,7 +39,7 @@ class ZhiTravelCover(CoverEntity, ZhiRestoreEntity):
         if self._travel_time:
             self._state = (STATE_OPENING, STATE_CLOSING)[op]
             self.untrack_cover()
-            self._untrack = self.hass.helpers.event.async_track_utc_time_change(async_tracking_cover)
+            self._untrack = async_track_utc_time_change(self.hass, async_tracking_cover)
         else:
             self.track_cover_end(op)
             self.async_write_ha_state()
@@ -83,7 +83,7 @@ class ZhiTravelCover(CoverEntity, ZhiRestoreEntity):
         if position > 0 and position < 100:
             async def async_pause_cover(_):
                 await self.async_stop_cover()
-            self.hass.helpers.event.async_call_later(self._travel_time * step / 100, async_pause_cover)
+            async_call_later(self.hass, self._travel_time * step / 100, async_pause_cover)
 
     def update_from_last_state(self, state):
         self._position = state.attributes.get('current_position', self._position)

@@ -1,6 +1,6 @@
 from homeassistant.const import STATE_UNAVAILABLE, STATE_UNKNOWN
 from homeassistant.helpers.restore_state import RestoreEntity
-
+from homeassistant.helpers.event import async_track_state_change_event
 
 class ZhiRestoreEntity(RestoreEntity):
 
@@ -14,7 +14,7 @@ class ZhiRestoreEntity(RestoreEntity):
             self.update_from_last_state(last_state)
 
         if self.state_sensor:
-            self.hass.helpers.event.async_track_state_change(self.state_sensor, self.state_sensor_changed)
+            async_track_state_change_event(self.hass, self.state_sensor, self.state_sensor_changed)
             state = self.hass.states.get(self.state_sensor)
             if state and state.state not in [STATE_UNKNOWN, STATE_UNAVAILABLE]:
                 self.update_from_sensor(state)
